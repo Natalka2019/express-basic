@@ -4,6 +4,12 @@ import { ResponseStatusCode } from "../utilities/ResponseStatusCode";
 import { ResponseErrorMessage } from "../utilities/ResponseErrorMessage";
 
 export const createBook = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.body.title) {
+    res
+      .status(ResponseStatusCode.BadRequest)
+      .json(ResponseErrorMessage.NoBookTitle);
+  }
+
   try {
     const newBook = { ...req.body, id: bookList.length + 1 };
     bookList.push(newBook);
@@ -30,6 +36,12 @@ export const updateBookTitle = (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.body.title) {
+    res
+      .status(ResponseStatusCode.BadRequest)
+      .json(ResponseErrorMessage.NoBookTitle);
+  }
+
   try {
     const updatedBook = { ...req.book, title: req.body.title };
 

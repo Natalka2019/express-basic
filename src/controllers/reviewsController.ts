@@ -10,16 +10,19 @@ export const addNewReview = (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.body.review.comment) {
+    res
+      .status(ResponseStatusCode.BadRequest)
+      .json(ResponseErrorMessage.NoReviewComment);
+  }
+
   try {
     const newReview = {
       ...req.body.review,
       id: req.book.reviews.length + 1,
     };
-    const updatedBook = {
-      ...req.book,
-      reviews: [...req.book.reviews, newReview],
-    };
-    bookList.push(updatedBook);
+
+    req.book.reviews = [...req.book.reviews, newReview];
 
     res.status(ResponseStatusCode.Created).send(newReview);
   } catch {
@@ -57,7 +60,7 @@ export const deleteReview = (
 ) => {
   try {
     req.book.reviews.splice(req.index, 1);
-    res.status(ResponseStatusCode.NoContent).send();
+    res.status(ResponseStatusCode.NoContent);
   } catch {
     next({
       status: ResponseStatusCode.ServerError,

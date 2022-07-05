@@ -8,13 +8,20 @@ export const checkIfReviewExists = (
   next: NextFunction
 ) => {
   const reviewId = +req.params.reviewId;
-  try {
-    req.index = req.book.reviews.findIndex((review) => review.id === reviewId);
 
-    next();
-  } catch {
+  const selectedReviewIndex = req.book.reviews.findIndex(
+    (review) => review.id === reviewId
+  );
+
+  if (selectedReviewIndex === -1) {
     res
       .status(ResponseStatusCode.NotFound)
-      .json({ message: ResponseErrorMessage.NoBReviewWithId });
+      .json({ message: ResponseErrorMessage.NoReviewWithId });
+  } else {
+    req.index = selectedReviewIndex;
+
+    console.log(req.index);
+
+    next();
   }
 };

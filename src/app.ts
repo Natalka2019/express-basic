@@ -1,7 +1,8 @@
 import * as express from "express";
 import bookRoutes from "./routes/booksRoute";
 import reviewsRoutes from "./routes/reviewsRoute";
-import { errorHandler } from "./errorHandler";
+import { errorHandler } from "./utilities/errorHandler";
+import { routeNotExistHandler } from "./utilities/routeNotExistHandler";
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.use(express.json());
 app.use("/books", bookRoutes);
 
 app.use("/reviews", reviewsRoutes);
+
+app.use(routeNotExistHandler);
 
 app.use(errorHandler);
 

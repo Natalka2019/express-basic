@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ResponseStatusCode } from "./utilities/ResponseStatusCode";
+import { ResponseStatusCode } from "./ResponseStatusCode";
 
 class HttpException extends Error {
   status: number;

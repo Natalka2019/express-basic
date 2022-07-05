@@ -8,12 +8,19 @@ export const checkIfBookExists = (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    req.book = bookList.find((book) => book.id === +req.params.id);
-    next();
-  } catch {
+  const selectedBook = bookList.find(
+    (book) =>
+      book.id === +req.params.id ||
+      book.id === +req.params.bookId ||
+      book.id === req.body.bookId
+  );
+
+  if (!selectedBook) {
     res
       .status(ResponseStatusCode.NotFound)
       .json({ message: ResponseErrorMessage.NoBookWithId });
+  } else {
+    req.book = selectedBook;
+    next();
   }
 };
