@@ -1,11 +1,15 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { bookList } from "../mockBooks";
 import { IBook } from "../interfaces/IBook";
 import { IReview } from "../interfaces/IReview";
 import { ResponseStatusCode } from "../utilities/ResponseStatusCode";
 import { ResponseErrorMessage } from "../utilities/ResponseErrorMessage";
 
-export const addNewReview = (req: Request, res: Response) => {
+export const addNewReview = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const newReview = {
       ...req.body.review,
@@ -19,13 +23,18 @@ export const addNewReview = (req: Request, res: Response) => {
 
     res.status(ResponseStatusCode.Created).send(newReview);
   } catch {
-    res
-      .status(ResponseStatusCode.ServerError)
-      .json({ message: ResponseErrorMessage.NoReviewAdded });
+    next({
+      status: ResponseStatusCode.ServerError,
+      message: ResponseErrorMessage.NoReviewAdded,
+    });
   }
 };
 
-export const getAllReviews = (req: Request, res: Response) => {
+export const getAllReviews = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const reviewsList: IReview[] = [];
 
@@ -34,19 +43,25 @@ export const getAllReviews = (req: Request, res: Response) => {
     });
     res.status(ResponseStatusCode.Ok).send(reviewsList);
   } catch {
-    res
-      .status(ResponseStatusCode.ServerError)
-      .json({ message: ResponseErrorMessage.NoReviewsSent });
+    next({
+      status: ResponseStatusCode.ServerError,
+      message: ResponseErrorMessage.NoReviewsSent,
+    });
   }
 };
 
-export const deleteReview = (req: Request, res: Response) => {
+export const deleteReview = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     req.book.reviews.splice(req.index, 1);
     res.status(ResponseStatusCode.NoContent).send();
   } catch {
-    res
-      .status(ResponseStatusCode.ServerError)
-      .json({ message: ResponseErrorMessage.NoReviewDeleted });
+    next({
+      status: ResponseStatusCode.ServerError,
+      message: ResponseErrorMessage.NoReviewDeleted,
+    });
   }
 };

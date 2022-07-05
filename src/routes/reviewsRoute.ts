@@ -5,7 +5,7 @@ import { checkIfReviewExists } from "../middlewares/reviewMiddleware";
 
 const router = Router();
 
-router.post("/", reviewsController.addNewReview);
+router.post("/", checkIfBookExists, reviewsController.addNewReview);
 
 router.get("/", reviewsController.getAllReviews);
 
