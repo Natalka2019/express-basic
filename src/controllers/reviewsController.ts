@@ -44,6 +44,7 @@ export const getAllReviews = (
     bookList.forEach((book: IBook) => {
       reviewsList.push(...book.reviews);
     });
+
     res.status(ResponseStatusCode.Ok).send(reviewsList);
   } catch {
     next({
@@ -60,7 +61,7 @@ export const deleteReview = (
 ) => {
   try {
     req.book.reviews.splice(req.index, 1);
-    res.status(ResponseStatusCode.NoContent);
+    res.status(ResponseStatusCode.NoContent).send();
   } catch {
     next({
       status: ResponseStatusCode.ServerError,

@@ -20,8 +20,6 @@ export const checkIfReviewExists = (
   } else {
     req.index = selectedReviewIndex;
 
-    console.log(req.index);
-
     next();
   }
 };
